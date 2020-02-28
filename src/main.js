@@ -8,16 +8,22 @@ app.use(cors())
 app.use(express.json())
 
 const typeDefs = gql`
-  type Query {
-    greetings: [String]!
-    greeting: String
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    tasks: [Task!]
+  }
+
+  type Task {
+    id: ID!
+    name: String!
+    completed: Boolean!
+    user: User
   }
 `
 const resolvers = {
-  Query: {
-    greetings: () => ['hello', ' world'],
-    greeting: () => 'hello world'
-  }
+  Query: {}
 }
 
 const apolloServer = new ApolloServer({
