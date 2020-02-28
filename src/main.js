@@ -2,6 +2,7 @@ import express from 'express'
 import { ApolloServer, gql } from 'apollo-server-express'
 import cors from 'cors'
 import dotEnv from 'dotenv'
+import resolvers from './resolvers/index'
 
 const app = express()
 app.use(cors())
@@ -40,36 +41,6 @@ const typeDefs = gql`
     createTask(input: taskInput!): Task
   }
 `
-const taskList = [
-  { id: '1', name: 'mi tarea 01', completed: true, userId: '1' },
-  { id: '2', name: 'mi tarea 02', completed: false, userId: '2' }
-]
-const userList = [
-  { id: '1', name: 'mi usuario 1', email: 'email_1@domain.com' },
-  { id: '2', name: 'mi usuario 2', email: 'email_2@domain.com' }
-]
-
-const resolvers = {
-  Query: {
-    tasks: () => taskList,
-    task: (_, { id }) => taskList.find(task => task.id === id),
-    users: () => userList,
-    user: (_, { id }) => userList.find(user => user.id === id)
-  },
-  Task: {
-    user: ({ userId }) => userList.find(user => user.id === userId),
-    name: ({ name }) => `${name}->testing` // overrides every prop 'name' in each resolver
-  },
-  User: {
-    tasks: ({ id }) => taskList.filter(task => task.userId === id)
-  },
-  Mutation: {
-    createTask: (_, { input }) => {
-      taskList.push(input)
-      return input
-    }
-  }
-}
 
 const apolloServer = new ApolloServer({
   typeDefs,
