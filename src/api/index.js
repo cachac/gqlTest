@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server-express'
-import userTypeDefs from './user'
-import taskTypeDefs from './task'
+import userTypeDefs from './users/typeDef'
+import taskTypeDefs from './tasks/typeDef'
 
 const typeDefs = gql`
   type Query {

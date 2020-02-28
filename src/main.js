@@ -1,9 +1,9 @@
 import express from 'express'
-import { ApolloServer, gql } from 'apollo-server-express'
+import { ApolloServer } from 'apollo-server-express'
 import cors from 'cors'
 import dotEnv from 'dotenv'
-import resolvers from './resolvers'
-import typeDefs from './typeDefs'
+import resolvers from './api/resolvers'
+import typeDefs from './api'
 
 const app = express()
 app.use(cors())
