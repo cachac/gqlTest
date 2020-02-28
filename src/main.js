@@ -148,3 +148,13 @@ query {
   }
 }
 */
+
+/* mutation - create task
+mutation createTask {
+  createTask(input: { id: 5, name: "new task 5", completed: false, userId: 2 }) 
+  {
+    id
+    name
+  }
+}
+*/
