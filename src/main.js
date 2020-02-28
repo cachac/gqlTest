@@ -13,9 +13,9 @@ const typeDefs = gql`
   }
 
   type User {
-    id: ID!
-    name: String!
-    email: String!
+    id: ID
+    name: String
+    email: String
     tasks: [Task]
   }
 
@@ -23,7 +23,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     completed: Boolean!
-    user: User
+    user: User!
   }
 `
 const resolvers = {
@@ -33,13 +33,31 @@ const resolvers = {
         id: '1',
         name: 'mi tarea 01',
         completed: true,
-        user: {
-          id: 1,
-          name: 'mi usuario',
-          email: 'email@domain.com'
-        }
+        userId: '1'
+      },
+      {
+        id: '2',
+        name: 'mi tarea 02',
+        completed: false,
+        userId: '1'
       }
     ]
+  },
+  Task: {
+    user: ({ userId }) =>
+      [
+        {
+          id: '1',
+          name: 'mi usuario 1',
+          email: 'email_1@domain.com'
+        },
+        {
+          id: '2',
+          name: 'mi usuario 2',
+          email: 'email_2@domain.com'
+        }
+      ].find(u => u.id === userId),
+    name: ({ name }) => `${name}->testing` // overrides every prop 'name' in each resolver
   }
 }
 
@@ -64,6 +82,20 @@ query {
     name
     user {
       email
+    }
+  }
+}
+*/
+
+/* using field level resolver
+query {
+  tasks{
+    id
+    name
+    completed
+    user{
+      id
+      name
     }
   }
 }
