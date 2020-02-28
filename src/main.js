@@ -11,6 +11,8 @@ const typeDefs = gql`
   type Query {
     tasks: [Task!]
     task(id: ID!): Task
+    users: [User]
+    user(id: ID!): User
   }
 
   type User {
@@ -39,11 +41,16 @@ const userList = [
 const resolvers = {
   Query: {
     tasks: () => taskList,
-    task: (_, { id }) => taskList.find(task => task.id === id)
+    task: (_, { id }) => taskList.find(task => task.id === id),
+    users: () => userList,
+    user: (_, { id }) => userList.find(user => user.id === id)
   },
   Task: {
     user: ({ userId }) => userList.find(user => user.id === userId),
     name: ({ name }) => `${name}->testing` // overrides every prop 'name' in each resolver
+  },
+  User: {
+    tasks: ({ id }) => taskList.filter(task => task.userId === id)
   }
 }
 
@@ -94,6 +101,32 @@ query {
     name
     user {
       email
+    }
+  }
+}
+*/
+
+/* get list of users and its tasks
+query {
+  users {
+    id
+    name
+    email
+    tasks {
+      name
+    }
+  }
+}
+*/
+
+/* get user by id
+query {
+  user(id: 1) {
+    id
+    name
+    email
+    tasks {
+      name
     }
   }
 }
