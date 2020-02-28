@@ -10,6 +10,7 @@ app.use(express.json())
 const typeDefs = gql`
   type Query {
     tasks: [Task!]
+    task(id: ID!): Task
   }
 
   type User {
@@ -26,37 +27,22 @@ const typeDefs = gql`
     user: User!
   }
 `
+const taskList = [
+  { id: '1', name: 'mi tarea 01', completed: true, userId: '1' },
+  { id: '2', name: 'mi tarea 02', completed: false, userId: '1' }
+]
+const userList = [
+  { id: '1', name: 'mi usuario 1', email: 'email_1@domain.com' },
+  { id: '2', name: 'mi usuario 2', email: 'email_2@domain.com' }
+]
+
 const resolvers = {
   Query: {
-    tasks: () => [
-      {
-        id: '1',
-        name: 'mi tarea 01',
-        completed: true,
-        userId: '1'
-      },
-      {
-        id: '2',
-        name: 'mi tarea 02',
-        completed: false,
-        userId: '1'
-      }
-    ]
+    tasks: () => taskList,
+    task: (_, { id }) => taskList.find(task => task.id === id)
   },
   Task: {
-    user: ({ userId }) =>
-      [
-        {
-          id: '1',
-          name: 'mi usuario 1',
-          email: 'email_1@domain.com'
-        },
-        {
-          id: '2',
-          name: 'mi usuario 2',
-          email: 'email_2@domain.com'
-        }
-      ].find(u => u.id === userId),
+    user: ({ userId }) => userList.find(user => user.id === userId),
     name: ({ name }) => `${name}->testing` // overrides every prop 'name' in each resolver
   }
 }
@@ -96,6 +82,18 @@ query {
     user{
       id
       name
+    }
+  }
+}
+*/
+
+/* get task by id
+query {
+  task(id: 2) {
+    id
+    name
+    user {
+      email
     }
   }
 }
