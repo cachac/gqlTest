@@ -2,45 +2,12 @@ import express from 'express'
 import { ApolloServer, gql } from 'apollo-server-express'
 import cors from 'cors'
 import dotEnv from 'dotenv'
-import resolvers from './resolvers/index'
+import resolvers from './resolvers'
+import typeDefs from './typeDefs'
 
 const app = express()
 app.use(cors())
 app.use(express.json())
-
-const typeDefs = gql`
-  type User {
-    id: ID
-    name: String
-    email: String
-    tasks: [Task]
-  }
-
-  type Task {
-    id: ID!
-    name: String!
-    completed: Boolean!
-    user: User!
-  }
-
-  type Query {
-    tasks: [Task!]
-    task(id: ID!): Task
-    users: [User!]
-    user(id: ID!): User
-  }
-
-  input taskInput {
-    id: ID!
-    name: String!
-    completed: Boolean!
-    userId: ID!
-  }
-
-  type Mutation {
-    createTask(input: taskInput!): Task
-  }
-`
 
 const apolloServer = new ApolloServer({
   typeDefs,
