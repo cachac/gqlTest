@@ -8,13 +8,6 @@ app.use(cors())
 app.use(express.json())
 
 const typeDefs = gql`
-  type Query {
-    tasks: [Task!]
-    task(id: ID!): Task
-    users: [User]
-    user(id: ID!): User
-  }
-
   type User {
     id: ID
     name: String
@@ -28,10 +21,28 @@ const typeDefs = gql`
     completed: Boolean!
     user: User!
   }
+
+  type Query {
+    tasks: [Task!]
+    task(id: ID!): Task
+    users: [User!]
+    user(id: ID!): User
+  }
+
+  input taskInput {
+    id: ID!
+    name: String!
+    completed: Boolean!
+    userId: ID!
+  }
+
+  type Mutation {
+    createTask(input: taskInput!): Task
+  }
 `
 const taskList = [
   { id: '1', name: 'mi tarea 01', completed: true, userId: '1' },
-  { id: '2', name: 'mi tarea 02', completed: false, userId: '1' }
+  { id: '2', name: 'mi tarea 02', completed: false, userId: '2' }
 ]
 const userList = [
   { id: '1', name: 'mi usuario 1', email: 'email_1@domain.com' },
@@ -51,6 +62,12 @@ const resolvers = {
   },
   User: {
     tasks: ({ id }) => taskList.filter(task => task.userId === id)
+  },
+  Mutation: {
+    createTask: (_, { input }) => {
+      taskList.push(input)
+      return input
+    }
   }
 }
 
