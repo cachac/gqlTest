@@ -9,10 +9,16 @@ app.use(express.json())
 
 const typeDefs = gql`
   type Query {
-    greetings: String
+    greetings: [String]!
+    greeting: String
   }
 `
-const resolvers = {}
+const resolvers = {
+  Query: {
+    greetings: () => ['hello', ' world'],
+    greeting: () => 'hello world'
+  }
+}
 
 const apolloServer = new ApolloServer({
   typeDefs,
