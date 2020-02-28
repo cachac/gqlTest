@@ -55,3 +55,16 @@ app.listen(PORT, () => {
   console.log(`Server UP! ${PORT}`)
   console.log(`endpoint:  ${apolloServer.graphqlPath}`)
 })
+
+// basic query
+/*
+query {
+  tasks{
+    id
+    name
+    user {
+      email
+    }
+  }
+}
+*/
