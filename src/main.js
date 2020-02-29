@@ -4,6 +4,7 @@ import cors from 'cors'
 import dotEnv from 'dotenv'
 import resolvers from './api/resolvers'
 import typeDefs from './api'
+import connection from './database/util'
 
 const app = express()
 app.use(cors())
@@ -17,9 +18,11 @@ apolloServer.applyMiddleware({ app, path: '/graphql' })
 
 dotEnv.config()
 const PORT = process.env.PORT || 3000
+
 app.listen(PORT, () => {
   console.log(`Server UP! ${PORT}`)
   console.log(`endpoint:  ${apolloServer.graphqlPath}`)
+  connection.connect()
 })
 
 // basic query

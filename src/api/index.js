@@ -2,12 +2,9 @@ import { gql } from 'apollo-server-express'
 import userTypeDefs from './users/typeDef'
 import taskTypeDefs from './tasks/typeDef'
 
-const typeDefs = gql`
-  type Query {
-    _: String
-  }
-  type Mutation {
-    _: String
-  }
+const globalTypeDefs = gql`
+  scalar Date
+  type Query
+  type Mutation
 `
-export default [typeDefs, userTypeDefs, taskTypeDefs]
+export default [globalTypeDefs, userTypeDefs, taskTypeDefs]
