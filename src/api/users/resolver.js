@@ -1,23 +1,16 @@
+import { AuthenticationError /* ,UserInputError */ } from 'apollo-server-express'
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import Model from './model'
-
-const userList = [
-  { id: '1', name: 'mi usuario 1', email: 'email_1@domain.com' },
-  { id: '2', name: 'mi usuario 2', email: 'email_2@domain.com' }
-]
-
-const taskList = [
-  { id: '1', name: 'mi tarea 01', completed: true, userId: '1' },
-  { id: '2', name: 'mi tarea 02', completed: false, userId: '2' }
-]
+import taskModel from '../tasks/model'
 
 export default {
   Query: {
-    users: () => userList,
-    user: (_, { id }) => userList.find(user => user.id === id)
+    users: () => Model.find({}),
+    user: (_, { _id }) => Model.findOne({ _id })
   },
   User: {
-    tasks: ({ id }) => taskList.filter(task => task.userId === id)
+    tasks: ({ id }) => taskModel.filter(task => task.userId === id)
   },
   Mutation: {
     signup: async (_, { input }) => {
@@ -26,6 +19,14 @@ export default {
       const hashedPassword = bcrypt.hashSync(input.password, 12)
       const newUser = new Model({ ...input, password: hashedPassword })
       return newUser.save()
+    },
+    login: async (_, { input }) => {
+      const user = await Model.findOne({ email: input.email })
+      if (!user) throw new AuthenticationError('User not found')
+      const isPasswordValid = bcrypt.compareSync(input.password, user.password)
+      if (!isPasswordValid) throw new AuthenticationError('Invalid email or password')
+      const token = jwt.sign({ email: user.email }, 'SECRET', { expiresIn: '30D' })
+      return { token }
     }
   }
 }
@@ -39,6 +40,18 @@ mutation createUser {
   })
   {
     id
+  }
+}
+*/
+
+/* login
+mutation login {
+  login(input:{    
+    email:"c@fds12.c"
+    password: "123"
+  })
+  {
+    token
   }
 }
 */

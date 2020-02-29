@@ -3,7 +3,7 @@ import { gql } from 'apollo-server-express'
 export default gql`
   extend type Query {
     tasks: [Task!]
-    task(id: ID!): Task
+    task(_id: ID!): Task
   }
 
   type Task {
