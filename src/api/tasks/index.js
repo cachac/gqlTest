@@ -4,7 +4,12 @@ import resolvers from './resolver'
 const typeDefs = gql`
   extend type Query {
     tasks: [Task!]
-    task(_id: ID!): Task
+    tasksByUser: [Task!]
+    task(id: ID!): Task
+  }
+
+  extend type Mutation {
+    createTask(input: taskInput!): Task
   }
 
   type Task {
@@ -12,15 +17,13 @@ const typeDefs = gql`
     name: String!
     completed: Boolean!
     user: User!
+    createdAt: Date!
+    updatedAt: Date!
   }
 
   input taskInput {
     name: String!
     completed: Boolean!
-  }
-
-  extend type Mutation {
-    createTask(input: taskInput!): Task
   }
 `
 export default {

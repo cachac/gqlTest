@@ -4,7 +4,7 @@ import resolvers from './resolvers'
 const typeDefs = gql`
   extend type Query {
     users: [User!]
-    user(_id: ID!): User
+    user(id: ID!): User
   }
 
   extend type Mutation {
