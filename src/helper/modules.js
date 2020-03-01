@@ -2,7 +2,7 @@ const { gql, makeExecutableSchema } = require('apollo-server-express')
 const deepmerge = require('deepmerge')
 
 const directives = require('../api/directives')
-// const scalars = require('../scalars')
+const scalars = require('../api/scalars')
 
 const globalTypeDefs = gql`
   type Query
@@ -10,14 +10,10 @@ const globalTypeDefs = gql`
 `
 
 export const makeExecutableSchemaFromModules = ({ modules }) => {
-  let typeDefs = [
-    globalTypeDefs,
-    // ...scalars.typeDefs,
-    ...directives.typeDefs
-  ]
+  let typeDefs = [globalTypeDefs, ...scalars.typeDefs, ...directives.typeDefs]
 
   let resolvers = {
-    // ...scalars.resolvers
+    ...scalars.resolvers
   }
 
   modules.forEach(module => {

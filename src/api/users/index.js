@@ -38,6 +38,6 @@ const typeDefs = gql`
 `
 
 export default {
-  typeDefs: [typeDefs],
+  typeDefs,
   resolvers
 }

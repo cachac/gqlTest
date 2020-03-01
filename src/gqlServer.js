@@ -1,11 +1,9 @@
 import { ApolloServer } from 'apollo-server-express'
-// import resolvers from './api/resolvers'
-// import typeDefs from './api/typeDefs'
+import schema from './api/schema'
 import context from './helper/context'
-import schema from './api/modules' // FIXME:
 
 export const apolloServer = new ApolloServer({
-  schema, // FIXME: 
+  schema,
   context: async ({ req }) => ({
     user: await context.verifyUser(req)
   }),

@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server-express'
+import resolvers from './resolver'
 
-export default gql`
+const typeDefs = gql`
   extend type Query {
     tasks: [Task!]
     task(_id: ID!): Task
@@ -24,3 +25,7 @@ export default gql`
     createTask(input: taskInput!): Task
   }
 `
+export default {
+  typeDefs,
+  resolvers
+}
