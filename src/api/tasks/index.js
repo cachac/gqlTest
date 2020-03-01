@@ -3,7 +3,7 @@ import resolvers from './resolver'
 
 const typeDefs = gql`
   extend type Query {
-    tasks: [Task!] @isAuth
+    tasks(cursor: String, limit: Int): [Task!] @isAuth
     tasksByUser: [Task!] @isAuth
     task(id: ID!): Task @isAuth
   }

@@ -2,7 +2,15 @@ import Model from './model'
 
 export default {
   Query: {
-    tasks: () => Model.find({}).populate('user'),
+    tasks: (_, { cursor, limit = 10 }) => {
+      // const query = {}
+      // if (cursor) query._id = { $lt: cursor }
+      // cursor:  { _id: { '$lt': '5e5c2efca979e84fba42e55c' } }
+      return Model.find(cursor ? { _id: { $lt: cursor } } : {})
+        .populate('user')
+        .sort({ name: -1 })
+        .limit(limit)
+    },
     tasksByUser: (_, __, { userSession }) => Model.find({ user: userSession.id }).populate('user'),
     task: (_, { id }) => Model.findById(id).populate('user')
   },
@@ -27,7 +35,6 @@ mutation createTask {
     name
   }
 }
-
 
 mutation updateTask {
   update(id: "5e5b5dc1f29bde4e696ddd62", 
