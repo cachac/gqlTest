@@ -1,5 +1,5 @@
 import { gql } from 'apollo-server-express'
-import resolvers from './resolver'
+import resolvers from './resolvers'
 
 const typeDefs = gql`
   extend type Query {

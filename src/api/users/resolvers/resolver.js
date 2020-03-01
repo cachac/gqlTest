@@ -2,8 +2,8 @@ import { AuthenticationError /* ,UserInputError */ } from 'apollo-server-express
 // import { combineResolvers } from 'graphql-resolvers'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import Model from './model'
-import taskModel from '../tasks/model'
+import Model from '../model'
+import taskModel from '../../tasks/model'
 // import { isAuthenticated } from '../../middlewares/resolver'
 
 export default {
