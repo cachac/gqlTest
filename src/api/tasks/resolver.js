@@ -3,28 +3,23 @@ import userModel from '../users/model'
 
 export default {
   Query: {
-    tasks: () => Model.find({}),
-    tasksByUser: (_, __, { userSession }) => Model.find({ user: userSession.id }),
-    task: (_, { id }) => Model.findById(id)
+    tasks: () => Model.find({}).populate('user'),
+    tasksByUser: (_, __, { userSession }) => Model.find({ user: userSession.id }).populate('user'),
+    task: (_, { id }) => Model.findById(id).populate('user')
   },
   Task: {
-    user: ({ user }) => userModel.findById(user),
     name: ({ name }) => `${name}->testing` // overrides every prop 'name' in each resolver
   },
   Mutation: {
     create: async (_, { input }, { userSession }) => {
-      // const user = await userModel.findOne({ id: userSession.id })
       const newTask = new Model({ ...input, user: userSession.id })
       await newTask.populate('user').execPopulate()
       return newTask.save()
-      // user.tasks.push(result.id)
-      // await user.save()
-      // return result
     },
     update: async (_, { id, input }) => Model.findByIdAndUpdate(id, { ...input }, { new: true }),
     delete: async (_, { id }) => {
       const task = await Model.findByIdAndDelete(id)
-      await userModel.updateOne({ _id: task.user }, { $pull: { tasks: task.id } })
+      await userModel.findOneAndDelete({ _id: task.user }, { $pull: { tasks: task.id } })
       return task
     }
   }

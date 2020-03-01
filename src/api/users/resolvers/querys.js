@@ -1,7 +1,6 @@
 // import { combineResolvers } from 'graphql-resolvers'
-import Model from '../model'
-// import taskModel from '../../tasks/model'
 // import { isAuthenticated } from '../../middlewares/resolver'
+import Model from '../model'
 
 export const users = () => Model.find({})
 export const user = (_, { id } /* { userSession } */) =>

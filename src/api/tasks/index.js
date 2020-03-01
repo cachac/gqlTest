@@ -3,7 +3,8 @@ import resolvers from './resolver'
 
 const typeDefs = gql`
   extend type Query {
-    tasks: [Task!]
+    tasks: [Task!] @auth(requires: USER)
+    # @isAuthenticated
     tasksByUser: [Task!]
     task(id: ID!): Task
   }
