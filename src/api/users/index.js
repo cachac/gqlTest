@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server-express'
+import resolvers from './resolver'
 
-export default gql`
+const typeDefs = gql`
   extend type Query {
     users: [User!]
     user(_id: ID!): User
@@ -35,3 +36,8 @@ export default gql`
     password: String!
   }
 `
+
+export default {
+  typeDefs: [typeDefs],
+  resolvers
+}

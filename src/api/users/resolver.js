@@ -1,13 +1,19 @@
 import { AuthenticationError /* ,UserInputError */ } from 'apollo-server-express'
+// import { combineResolvers } from 'graphql-resolvers'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import Model from './model'
 import taskModel from '../tasks/model'
+// import { isAuthenticated } from '../../middlewares/resolver'
 
 export default {
   Query: {
     users: () => Model.find({}),
-    user: (_, { _id }) => Model.findOne({ _id })
+    user: (_, { _id }, { user }) => {
+      console.log('context: ', user)
+      // if (!user) throw new AuthenticationError('Access Denied, please login to continue')
+      return Model.findOne({ _id })
+    }
   },
   User: {
     tasks: ({ id }) => taskModel.filter(task => task.userId === id)

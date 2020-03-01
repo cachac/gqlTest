@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "nodemon src/main.js --exec babel-node"
+    "dev": "nodemon src/main.js --exec babel-node",
+    "test": "NODE_ENV=mocha mocha -r dotenv/config --recursive './{,!(node_modules)/**}/*.test.js'"
   },
   "repository": {
     "type": "git",
@@ -21,11 +22,15 @@
     "apollo-server-express": "^2.10.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "deepmerge": "^4.2.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "graphql": "^14.6.0",
     "graphql-iso-date": "^3.6.1",
+    "graphql-resolvers": "^0.4.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.2"
+    "mongoose": "^5.9.2",
+    "throng": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",

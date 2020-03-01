@@ -1,9 +1,10 @@
 import mongoose from 'mongoose'
+import config from '../config'
 
 export default {
   connect: () => {
     try {
-      mongoose.connect(process.env.MONGO_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+      mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
       console.log('> MongoDB Connected!')
     } catch (error) {
       console.log('> Connection Error')

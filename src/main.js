@@ -1,36 +1,31 @@
 import express from 'express'
-import { ApolloServer } from 'apollo-server-express'
+import throng from 'throng'
 import cors from 'cors'
-import dotEnv from 'dotenv'
-import resolvers from './api/resolvers'
-import typeDefs from './api/typeDefs'
-import connection from './database/util'
-import { verifyUser } from './helper/context'
+import config from './config'
+import connection from './database'
+import { apolloServer } from './gqlServer'
 
 const app = express()
 app.use(cors())
 app.use(express.json())
-
-const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: ({ req, res, next }) => {
-    verifyUser(req)
-    return {
-      testCtx: () => {}
-    }
-  }
-})
 apolloServer.applyMiddleware({ app, path: '/graphql' })
 
-dotEnv.config()
-const PORT = process.env.PORT || 3000
+const startServer = async () => {
+  app.listen(config.PORT, () => {
+    console.log(`Server UP! ${config.PORT}`)
+    console.log(`endpoint:  ${apolloServer.graphqlPath}`)
+    connection.connect()
+  })
+}
 
-app.listen(PORT, () => {
-  console.log(`Server UP! ${PORT}`)
-  console.log(`endpoint:  ${apolloServer.graphqlPath}`)
-  connection.connect()
-})
+// Let's make Node.js clustered for beter multi-core performance
+throng(
+  {
+    workers: config.WORKERS,
+    lifetime: Infinity
+  },
+  startServer
+)
 
 // basic query
 /*
