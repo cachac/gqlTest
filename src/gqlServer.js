@@ -5,7 +5,7 @@ import context from './helper/context'
 export const apolloServer = new ApolloServer({
   schema,
   context: async ({ req }) => ({
-    user: await context.verifyUser(req)
+    userSession: await context.verifyUser(req)
   }),
   formatError: err => {
     console.log('>> error', err.message)

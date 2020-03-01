@@ -9,7 +9,6 @@ export default {
       return new Promise(resolve => {
         jwt.verify(token, 'SECRET', (err, decoded) => {
           if (err) return resolve(null)
-          console.log('decoded data: ', { ...decoded })
           return resolve({ ...decoded })
         })
       })

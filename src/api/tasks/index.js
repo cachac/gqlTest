@@ -15,10 +15,8 @@ const typeDefs = gql`
   }
 
   input taskInput {
-    id: ID!
     name: String!
     completed: Boolean!
-    userId: ID!
   }
 
   extend type Mutation {
