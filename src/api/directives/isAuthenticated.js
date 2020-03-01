@@ -1,4 +1,4 @@
-const {  SchemaDirectiveVisitor, AuthenticationError } = require('apollo-server-express')
+const { SchemaDirectiveVisitor, AuthenticationError } = require('apollo-server-express')
 const { defaultFieldResolver } = require('graphql')
 
 export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
@@ -9,7 +9,6 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
     field.resolve = async function(...args) {
       const context = args[2]
 
-      console.log(`directive: ${context.userSession}`)
       if (!context || !context.userSession) {
         throw new AuthenticationError('Not allowed')
       }
@@ -18,13 +17,3 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
     }
   }
 }
-
-// export default {
-//   typeDef,
-//   IsAuthenticatedDirective
-// }
-
-// export default {
-//   typeDef,
-//   directive: IsAuthenticatedDirective
-// }

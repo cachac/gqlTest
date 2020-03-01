@@ -3,16 +3,15 @@ import resolvers from './resolver'
 
 const typeDefs = gql`
   extend type Query {
-    tasks: [Task!] @auth(requires: USER)
-    # @isAuthenticated
-    tasksByUser: [Task!]
-    task(id: ID!): Task
+    tasks: [Task!] @isAuth
+    tasksByUser: [Task!] @isAuth
+    task(id: ID!): Task @isAuth
   }
 
   extend type Mutation {
-    create(input: taskInput!): Task
-    update(id: ID!, input: taskInput!): Task
-    delete(id: ID!): Task
+    create(input: taskInput!): Task @isAuth
+    update(id: ID!, input: taskInput!): Task @isAuth
+    delete(id: ID!): Task @isAuth
   }
 
   type Task {

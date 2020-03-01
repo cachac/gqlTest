@@ -1,5 +1,4 @@
 import Model from './model'
-import userModel from '../users/model'
 
 export default {
   Query: {
@@ -16,12 +15,8 @@ export default {
       await newTask.populate('user').execPopulate()
       return newTask.save()
     },
-    update: async (_, { id, input }) => Model.findByIdAndUpdate(id, { ...input }, { new: true }),
-    delete: async (_, { id }) => {
-      const task = await Model.findByIdAndDelete(id)
-      await userModel.findOneAndDelete({ _id: task.user }, { $pull: { tasks: task.id } })
-      return task
-    }
+    update: async (_, { id, input }) => Model.findByIdAndUpdate(id, { ...input }, { new: true }).populate('user'),
+    delete: async (_, { id }) => Model.findByIdAndDelete(id).populate('user')
   }
 }
 

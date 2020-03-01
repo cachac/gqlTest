@@ -9,7 +9,7 @@ export const apolloServer = new ApolloServer({
   }),
   formatError: err => {
     console.log('>> error', err.message)
-    // if production return only message
+    // if production return to FrontEnd only message
     // return err.message
     return err
   }
