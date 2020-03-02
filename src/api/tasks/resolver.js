@@ -1,20 +1,36 @@
 import Model from './model'
+// import userModel from '../users/model'
+import { stringToBase64, base64ToString } from '../../helper/base64'
 
 export default {
   Query: {
-    tasks: (_, { cursor, limit = 10 }) => {
-      // const query = {}
-      // if (cursor) query._id = { $lt: cursor }
-      // cursor:  { _id: { '$lt': '5e5c2efca979e84fba42e55c' } }
-      return Model.find(cursor ? { _id: { $lt: cursor } } : {})
-        .populate('user')
-        .sort({ name: -1 })
-        .limit(limit)
+    tasks: async (_, { cursor, limit = 10 }) => {
+      let task = await Model.find(cursor ? { _id: { $lt: base64ToString(cursor) } } : {})
+        // .populate('user')
+        .sort({ _id: -1 })
+        .limit(limit + 1)
+      const hasNextPage = task.length > limit
+      task = hasNextPage ? task.slice(0, -1) : task
+      return {
+        taskFeed: task,
+        pageInfo: {
+          nextPageCursor: hasNextPage ? stringToBase64(task[task.length - 1].id) : null,
+          hasNextPage
+        }
+      }
     },
-    tasksByUser: (_, __, { userSession }) => Model.find({ user: userSession.id }).populate('user'),
-    task: (_, { id }) => Model.findById(id).populate('user')
+    tasksByUser: (_, __, { userSession }) => Model.find({ user: userSession.id }),
+    // .populate('user')
+    task: (_, { id }) => Model.findById(id)
+    // .populate('user')
   },
   Task: {
+    // users.find({ _id: { '$in': [ ObjectId("5e5c4c5b4e35f30d016d7f21") ] } }, { projection: {} })
+    user: async ({ user }, _, { loaders }) => loaders.user.load(user.toString()),
+    // user: async ({ user }) => {
+    //   console.log('BUSCANDO USUARIO: ', user)
+    //   return userModel.findById(user)
+    // },
     name: ({ name }) => `${name}->testing` // overrides every prop 'name' in each resolver
   },
   Mutation: {
