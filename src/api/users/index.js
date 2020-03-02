@@ -12,6 +12,10 @@ const typeDefs = gql`
     login(input: loginInput): Token
   }
 
+  extend type Subscription {
+    userCreated: User
+  }
+
   type User {
     id: ID
     name: String

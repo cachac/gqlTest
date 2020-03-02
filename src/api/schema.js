@@ -7,6 +7,7 @@ const globalTypeDefs = gql`
   scalar Date
   type Query
   type Mutation
+  type Subscription
 `
 
 export default makeExecutableSchema({

@@ -1,5 +1,5 @@
 import express from 'express'
-import throng from 'throng'
+// import throng from 'throng'
 import cors from 'cors'
 import config from './config'
 import connection from './database'
@@ -10,22 +10,30 @@ app.use(cors())
 app.use(express.json())
 apolloServer.applyMiddleware({ app, path: '/graphql' })
 
-const startServer = async () => {
-  app.listen(config.PORT, () => {
-    console.log(`Server UP! ${config.PORT}`)
-    console.log(`endpoint:  ${apolloServer.graphqlPath}`)
-    connection.connect()
-  })
-}
+const serverSubscription = app.listen(config.PORT, () => {
+  console.log(`Server UP! ${config.PORT}`)
+  console.log(`endpoint:  ${apolloServer.graphqlPath}`)
+  connection.connect()
+})
+
+// GraphQL subscription
+apolloServer.installSubscriptionHandlers(serverSubscription)
+
+// const startServer = () =>
+//   app.listen(config.PORT, () => {
+//     console.log(`Server UP! ${config.PORT}`)
+//     console.log(`endpoint:  ${apolloServer.graphqlPath}`)
+//     connection.connect()
+//   })
 
 // Let's make Node.js clustered for beter multi-core performance
-throng(
-  {
-    workers: config.WORKERS,
-    lifetime: Infinity
-  },
-  startServer
-)
+// throng(
+//   {
+//     workers: config.WORKERS,
+//     lifetime: Infinity
+//   },
+//   startServer
+// )
 
 // basic query
 /*
