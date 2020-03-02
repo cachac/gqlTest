@@ -1,3 +1,3 @@
-import { PubSub } from 'apollo-server-express'
+const { PubSub } = require('apollo-server-express')
 
 export const pubsub = new PubSub()

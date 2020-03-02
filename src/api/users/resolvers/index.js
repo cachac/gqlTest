@@ -1,5 +1,5 @@
 import { pubsub } from '../../subscription'
-import userEvents from '../../subscription/events'
+import events from '../../subscription/events'
 import { user, users } from './querys'
 import { signup } from './signup'
 import { login } from './login'
@@ -16,7 +16,7 @@ export default {
   },
   Subscription: {
     userCreated: {
-      subscribe: () => pubsub.asyncIterator(userEvents.userEvents.USER_CREATED)
+      subscribe: () => pubsub.asyncIterator(events.USER_CREATED)
     }
   },
   User

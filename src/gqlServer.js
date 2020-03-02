@@ -6,8 +6,8 @@ import loaders from './api/loaders'
 
 export const apolloServer = new ApolloServer({
   schema,
-  context: async ({ req, connection }) => ({
-    userSession: await context.verifyUser(req),
+  context: async ({ req }) => ({
+    userSession: req ? await context.verifyUser(req) : null,
     loaders: {
       user: new Dataloader(keys => loaders.user.batchUsers(keys))
     }

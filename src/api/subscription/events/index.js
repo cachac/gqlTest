@@ -1,6 +1,5 @@
-// import * as userEvents from './user'
-import userEvents from './user'
+import { USER_CREATED } from './user'
 
 export default {
-  userEvents
+  USER_CREATED
 }
